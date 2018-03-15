@@ -1,0 +1,112 @@
+{# Automatically extends the right outer layout and also handles AJAX siutations #}
+{% extends data.outerLayout %}
+
+{% block title %}
+  {# Create a useful, SEO-friendly title tag based on what we have #}
+  {% if data.piece %}
+    {{ data.piece.title }}
+  {% elseif data.page %}
+    {{ data.page.title }}
+  {% else %}
+    {{ apos.log('Looks like you forgot to override the title block in a template that does not have access to an Apostrophe page or piece.') }}
+  {% endif %}
+{% endblock %}
+
+{% block extraHead %}
+  {#
+    This block outputs its contents in the HTML document's <head>.
+    It is a good place to put extra <script> <link> and <meta> tags.
+  #}
+{% endblock %}
+
+
+
+
+
+{% block beforeMain %}
+
+  {#
+    We recommend you use the beforeMain block for global page components
+    like headers or navigation.
+  #}
+  
+  {# <h2><a href="{{ data.home._url }}">{{ data.home.title }}</a></h2> #}
+  {# <ul class="tabs">
+    {% for tab in data.home._children %}
+      <li class="
+        {% if data.page and
+          (apos.pages.isAncestorOf(tab, data.page) or tab._id == data.page._id)
+        %}
+          current
+        {% endif %}
+      "><a href="{{ tab._url }}">{{ tab.title }}</a></li>
+    {% endfor %}
+  </ul> #}
+
+  <ul class="tabs">
+  {% for tab in data.home._children %}
+    <li><a href="{{ tab._url }}">{{ tab.title }}</a>
+      {% if tab._children.length %}
+        <ul>
+          {% for child in tab._children %}
+            <li><a href="{{ child._url }}">{{ child.title }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+––
+{% if data.page %}
+  <ul class="accordion">
+    {% for ancestor in data.page._ancestors %}
+      <li><a href="{{ ancestor._url }}">{{ ancestor.title }}</a>
+        {% if ancestor._children.length %}
+          <ul>
+            {% for child in ancestor._children %}
+              <li><a href="{{ child._url }}">{{ child.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+––
+
+Breadcrumb:
+  {% if data.page %}
+    {# <ul class="breadcrumbs"> #}
+
+      {% for ancestor in data.page._ancestors %}
+        <a href="{{ ancestor._url }}">{{ ancestor.title }}</a>/
+        {# </li> #}
+      {% endfor %}
+    {# </ul> #}
+  {% endif %}
+
+{% endblock %}
+
+{% block main %}
+  {#
+    Usually, your page templates in the apostrophe-pages module will override
+    this block. It is safe to assume this is where your page-specific content
+    should go.
+  #}
+  main
+{% endblock %}
+
+{% block afterMain %}
+  {#
+    This would be a great place to put a global footer.
+  #}
+afterMain
+
+<div class="main-content">
+    {{ apos.singleton(data.global, 'footer', 'apostrophe-rich-text', {
+      toolbar: [ 'Bold', 'Italic', 'Styles', 'Link', 'Unlink' ]
+    }) }}
+  </div>
+
+{% endblock %}

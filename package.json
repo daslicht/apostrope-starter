@@ -1,0 +1,20 @@
+{
+    "name": "first-project",
+    "version": "2.0.0",
+    "description": "Minimal Apostrophe Boilerplate",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "watch": "nodemon -x 'npm run start'"
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "author": "P'unk Avenue",
+    "license": "MIT",
+    "dependencies": {
+        "apostrophe": "^2.47.0",
+        "nodemon": "^1.17.2"
+    }
+}

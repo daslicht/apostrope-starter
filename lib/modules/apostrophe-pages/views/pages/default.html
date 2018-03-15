@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block main %}
+  <div class="main-content">
+        {{ 
+            apos.area(data.page, 'body', {
+                widgets: {
+                    'apostrophe-rich-text': {
+                        toolbar: [ 'Bold', 'Italic' ],
+                        styles: [
+                            { name: 'Title', element: 'h3' },
+                            { name: 'Meta', element: 'h5' }
+                        ]
+                    },
+                    'apostrophe-images': {
+                        size: 'full'
+                    }
+                }
+                })
+        }}
+  </div>
+{% endblock %}
